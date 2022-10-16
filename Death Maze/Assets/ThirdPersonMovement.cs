@@ -26,5 +26,6 @@ public class ThirdPersonMovement : MonoBehaviour
 
             controller.Move(direction * speed * Time.deltaTime);
         }
+        
     }
 }
