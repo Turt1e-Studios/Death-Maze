@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class ChaserMovement : MonoBehaviour
 {
+
+    public static event System.Action OnChaserHasSpottedPlayer;
+
     public Transform ThirdPersonMovement;
     public float speed = 7;
 
@@ -24,6 +27,13 @@ public class ChaserMovement : MonoBehaviour
         if (distanceToTarget > 1.5f)
         {
             transform.Translate(velocity * Time.deltaTime);
+        }
+        else
+        {
+            if (OnChaserHasSpottedPlayer != null)
+            {
+                OnChaserHasSpottedPlayer();
+            }
         }
         
     }

@@ -11,13 +11,25 @@ public class ThirdPersonMovement : MonoBehaviour
     public float turnSmoothTime = 0.1f;
     float turnSmoothVelocity;
 
+    bool disabled;
+
+    void Start()
+    {
+        ChaserMovement.OnChaserHasSpottedPlayer += Disable;
+    }
+
     // Update is called once per frame
     void Update()
     {
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
-        Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
 
+        Vector3 direction = Vector3.zero;
+        if (!disabled)
+        {
+            direction = new Vector3(horizontal, 0f, vertical).normalized;
+        }
+        
         if (direction.magnitude >= 0.1f)
         {
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
@@ -27,5 +39,15 @@ public class ThirdPersonMovement : MonoBehaviour
             controller.Move(direction * speed * Time.deltaTime);
         }
 
+    }
+
+    void Disable()
+    {
+        disabled = true;
+    }
+
+    void OnDestroy()
+    {
+        ChaserMovement.OnChaserHasSpottedPlayer -= Disable;
     }
 }
