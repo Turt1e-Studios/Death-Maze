@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class ThirdPersonMovement : MonoBehaviour
 {
+    public event System.Action OnReachedEndOfLevel;
+
     public CharacterController controller;
 
     public float speed = 6f;
-
     public float turnSmoothTime = 0.1f;
+
     float turnSmoothVelocity;
 
-    bool disabled;
+    bool disabled = false;
 
     void Start()
     {
@@ -39,6 +41,18 @@ public class ThirdPersonMovement : MonoBehaviour
             controller.Move(direction * speed * Time.deltaTime);
         }
 
+    }
+
+    void OnTriggerEnter(Collider hitCollider)
+    {
+        if (hitCollider.tag == "Finish")
+        {
+            Disable();
+            if (OnReachedEndOfLevel != null)
+            {
+                OnReachedEndOfLevel();
+            }
+        }
     }
 
     void Disable()

@@ -17,7 +17,7 @@ public class PowerUp : MonoBehaviour
 
     IEnumerator Pickup(Collider player)
     {
-        ThirdPersonMovement stats = player.transform.parent.GetComponent<ThirdPersonMovement>();
+        ThirdPersonMovement stats = player.transform.GetComponent<ThirdPersonMovement>();
         stats.speed *= multiplier;
 
         // disable view of powerup when touched
