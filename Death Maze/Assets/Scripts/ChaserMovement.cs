@@ -10,10 +10,12 @@ public class ChaserMovement : MonoBehaviour
     public Transform ThirdPersonMovement;
     public float speed = 7;
 
+    bool disabled = false;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        FindObjectOfType<ThirdPersonMovement>().OnReachedEndOfLevel += Disable;
     }
 
     // Update is called once per frame
@@ -24,7 +26,7 @@ public class ChaserMovement : MonoBehaviour
         Vector3 velocity = directionToTarget * speed;
 
         float distanceToTarget = displacementFromTarget.magnitude;
-        if (distanceToTarget > 1.5f)
+        if (distanceToTarget > 1.5f && disabled == false)
         {
             transform.Translate(velocity * Time.deltaTime);
         }
@@ -33,8 +35,14 @@ public class ChaserMovement : MonoBehaviour
             if (OnChaserHasSpottedPlayer != null)
             {
                 OnChaserHasSpottedPlayer();
+                Disable();
             }
         }
         
+    }
+
+    void Disable()
+    {
+        disabled = true;
     }
 }

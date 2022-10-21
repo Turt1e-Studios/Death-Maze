@@ -13,7 +13,7 @@ public class ThirdPersonMovement : MonoBehaviour
 
     float turnSmoothVelocity;
 
-    bool disabled = false;
+    bool disabled;
 
     void Start()
     {
