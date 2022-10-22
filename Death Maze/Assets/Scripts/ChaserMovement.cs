@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ChaserMovement : MonoBehaviour
 {
-
     public static event System.Action OnChaserHasSpottedPlayer;
 
     public Transform ThirdPersonMovement;
