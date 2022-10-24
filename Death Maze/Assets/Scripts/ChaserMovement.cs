@@ -8,7 +8,7 @@ public class ChaserMovement : MonoBehaviour
     public static event System.Action OnChaserHasSpottedPlayer;
 
     public Transform ThirdPersonMovement;
-    public float speed = 7;
+    public float speed = 5;
 
     bool disabled = false;
 
@@ -42,33 +42,39 @@ public class ChaserMovement : MonoBehaviour
         float distanceToTarget = displacementFromTarget.magnitude;
 
 
-        //if (distanceToTarget > 1.5f)
+        if (distanceToTarget >= 2.5f && disabled == false)
         {
             //   if (!inCoRoutine)
-            //StartCoroutine(DoSomething());
-            //navMeshAgent.SetDestination(target);
+            //DoSomething();
+            navMeshAgent.SetDestination(ThirdPersonMovement.position);
             //GetNewPath();
         }
 
 
-        if (distanceToTarget < 1.5f && disabled == false)
-        {
+        //if (distanceToTarget < 2.5f && distanceToTarget > 0.1f)
+        //{
             //transform.Translate(velocity * Time.deltaTime);
-            navMeshAgent.SetDestination(ThirdPersonMovement.position);
-        }
+            //navMeshAgent.SetDestination(ThirdPersonMovement.position);
+        //}
 
-        if (distanceToTarget > 1.5f && disabled == false)
-        {
+       // if (distanceToTarget < 1.5f && disabled == false)
+        //{
             //transform.Translate(velocity * Time.deltaTime);
-            navMeshAgent.SetDestination(ThirdPersonMovement.position);
-        }
+            //navMeshAgent.SetDestination(ThirdPersonMovement.position);
+        //}
         else
         {
-            if (OnChaserHasSpottedPlayer != null)
-            {
-                OnChaserHasSpottedPlayer();
-                Disable();
+            //if ( distanceToTarget <= 0.01f)
+            //{
+                if (OnChaserHasSpottedPlayer != null) {
+
+                    OnChaserHasSpottedPlayer();
+                    Disable();
+
+                //}
             }
+                
+    
         }
         
     }
@@ -105,7 +111,7 @@ public class ChaserMovement : MonoBehaviour
         yield return new WaitForSeconds(timeForNewPath);
         GetNewPath();
         validPath = navMeshAgent.CalculatePath(target, path);
-        //if (!validPath) Debug.Log("Found an inavlid path");
+        if (!validPath) Debug.Log("Found an inavlid path");
 
 
         while (!validPath)
