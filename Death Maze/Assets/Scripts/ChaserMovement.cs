@@ -42,7 +42,7 @@ public class ChaserMovement : MonoBehaviour
         float distanceToTarget = displacementFromTarget.magnitude;
 
 
-        if (distanceToTarget >= 2.5f && disabled == false)
+        if (distanceToTarget >= 2.0f && disabled == false)
         {
             //   if (!inCoRoutine)
             //DoSomething();
