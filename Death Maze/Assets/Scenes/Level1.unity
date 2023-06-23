@@ -1498,13 +1498,13 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 0.9056604, g: 0.8573882, b: 0.19607843, a: 1}
-  m_Intensity: 1
-  m_Range: 20
+  m_Intensity: 0.75
+  m_Range: 5
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 0
+    m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -2048,12 +2048,12 @@ Light:
   m_Shape: 0
   m_Color: {r: 0.5377358, g: 0.5250534, b: 0.39822888, a: 1}
   m_Intensity: 8
-  m_Range: 13
-  m_SpotAngle: 30
-  m_InnerSpotAngle: 3
+  m_Range: 12
+  m_SpotAngle: 15
+  m_InnerSpotAngle: 1
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 1
+    m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -2155,6 +2155,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 7fa983d31201e714f9ad714cd0f0918c, type: 3}
       propertyPath: m_Name
       value: 5cda5c99-e87e-4a08-bb31-bed5b6f409aa (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7fa983d31201e714f9ad714cd0f0918c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7fa983d31201e714f9ad714cd0f0918c, type: 3}
