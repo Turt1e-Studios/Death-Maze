@@ -1,20 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
+/*
+ * Camera movement
+ */
 using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
-    public Transform player;
+    [SerializeField] private Transform player;
+    private const int YDisplacement = 20;
 
-    // Start is called before the first frame update
-    void Start()
+    // Makes the camera always directly above the player
+    private void Update()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        transform.position = player.transform.position + new Vector3(0, 20, 0);
+        transform.position = player.transform.position + new Vector3(0, YDisplacement, 0);
     }
 }

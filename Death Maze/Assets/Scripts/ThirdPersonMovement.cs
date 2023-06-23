@@ -1,66 +1,60 @@
-using System.Collections;
-using System.Collections.Generic;
+/*
+ * Player movement and controls
+ */
 using UnityEngine;
 
 public class ThirdPersonMovement : MonoBehaviour
 {
     public event System.Action OnReachedEndOfLevel;
 
-    public CharacterController controller;
-
     public float speed = 6f;
-    public float turnSmoothTime = 0.1f;
+    [SerializeField] private CharacterController controller;
+    [SerializeField] private float turnSmoothTime = 0.1f;
 
-    float turnSmoothVelocity;
+    private float _turnSmoothVelocity;
+    private bool _disabled;
 
-    bool disabled;
-
-    void Start()
+    private void Start()
     {
         ChaserMovement.OnChaserHasSpottedPlayer += Disable;
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
 
         Vector3 direction = Vector3.zero;
-        if (!disabled)
+        if (!_disabled)
         {
             direction = new Vector3(horizontal, 0f, vertical).normalized;
         }
-        
-        if (direction.magnitude >= 0.1f)
-        {
-            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
-            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
-            transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
-            controller.Move(direction * speed * Time.deltaTime);
-        }
+        if (!(direction.magnitude >= 0.1f)) return;
+        float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+        float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref _turnSmoothVelocity, turnSmoothTime);
+        transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
+        controller.Move(direction * (speed * Time.deltaTime));
     }
 
-    void OnTriggerEnter(Collider hitCollider)
+    // Triggers end
+    private void OnTriggerEnter(Collider hitCollider)
     {
-        if (hitCollider.tag == "Finish")
-        {
-            Disable();
-            if (OnReachedEndOfLevel != null)
-            {
-                OnReachedEndOfLevel();
-            }
-        }
+        if (!hitCollider.CompareTag("Finish")) return;
+        Disable();
+        OnReachedEndOfLevel?.Invoke();
     }
 
-    void Disable()
+    // Disable the player when game over
+    private void Disable()
     {
-        disabled = true;
+        _disabled = true;
     }
 
-    void OnDestroy()
+    // Add disable
+    private void OnDestroy()
     {
         ChaserMovement.OnChaserHasSpottedPlayer -= Disable;
     }

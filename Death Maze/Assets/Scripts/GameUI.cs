@@ -1,48 +1,50 @@
-using System.Collections;
-using System.Collections.Generic;
+/*
+ * General UI for game over etc
+ */
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameUI : MonoBehaviour
 {
-    public GameObject gameLoseUI;
-    public GameObject gameWinUI;
-    bool gameIsOver;
+    [SerializeField] private GameObject gameLoseUI;
+    [SerializeField] private GameObject gameWinUI;
+    
+    private bool _gameIsOver;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         ChaserMovement.OnChaserHasSpottedPlayer += ShowGameLoseUI;
         FindObjectOfType<ThirdPersonMovement>().OnReachedEndOfLevel += ShowGameWinUI;
-
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if (gameIsOver)
+        if (!_gameIsOver) return;
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                SceneManager.LoadScene(0);
-            }
+            SceneManager.LoadScene(0);
         }
     }
 
-    void ShowGameWinUI()
+    // Show win UI when game over
+    private void ShowGameWinUI()
     {
         OnGameOver(gameWinUI);
     }
 
-    void ShowGameLoseUI()
+    // Show lose UI when game over
+    private void ShowGameLoseUI()
     {
         OnGameOver(gameLoseUI);
     }
 
-    void OnGameOver(GameObject gameOverUI)
+    // Actions when game over
+    private void OnGameOver(GameObject gameOverUI)
     {
         gameOverUI.SetActive(true);
-        gameIsOver = true;
+        _gameIsOver = true;
         ChaserMovement.OnChaserHasSpottedPlayer -= ShowGameLoseUI;
         FindObjectOfType<ThirdPersonMovement>().OnReachedEndOfLevel -= ShowGameWinUI;
     }

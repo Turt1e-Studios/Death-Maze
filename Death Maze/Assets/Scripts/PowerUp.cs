@@ -1,26 +1,30 @@
+/*
+ * Speed power-up that the player can pick up
+ */
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PowerUp : MonoBehaviour
 {
-    public float multiplier = 1.5f;
-    public float duration = 4f;
+    [SerializeField] private float multiplier = 1.5f;
+    [SerializeField] private float duration = 4f;
 
-    void OnTriggerEnter(Collider triggerCollider)
+    // Player pick up object
+    private void OnTriggerEnter(Collider triggerCollider)
     {
-        if (triggerCollider.tag == "Player")
+        if (triggerCollider.CompareTag("Player"))
         {
             StartCoroutine(Pickup(triggerCollider));
         }
     }
 
-    IEnumerator Pickup(Collider player)
+    // Change stats after duration and reverse
+    private IEnumerator Pickup(Collider player)
     {
         ThirdPersonMovement stats = player.transform.GetComponent<ThirdPersonMovement>();
         stats.speed *= multiplier;
 
-        // disable view of powerup when touched
+        // Disable view of powerup when touched
         GetComponent<MeshRenderer>().enabled = false;
         GetComponent<Collider>().enabled = false;
 

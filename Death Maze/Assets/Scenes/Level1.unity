@@ -1564,9 +1564,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b4f538226466cd449ff9e66ef571222, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ThirdPersonMovement: {fileID: 765430598}
-  speed: 5
   navMeshAgent: {fileID: 0}
+  thirdPersonMovement: {fileID: 765430598}
+  speed: 5
   timeForNewPath: 0
 --- !u!65 &1667920902
 BoxCollider:

@@ -1,24 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
+/*
+ * Movement of the player
+ * Unused ...?
+ */
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
-
 {
-    public float speed = 10;
-
-    // Start is called before the first frame update
-    void Start()
-
-    {
-        
-    }
+    [SerializeField] private float speed = 10;
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        Vector3 pinput = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
-        Vector3 direction = pinput.normalized;
+        Vector3 pInput = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
+        Vector3 direction = pInput.normalized;
         Vector3 velocity = direction * speed;
         Vector3 moveAmount = velocity * Time.deltaTime;
 

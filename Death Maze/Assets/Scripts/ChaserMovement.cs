@@ -1,52 +1,45 @@
+/*
+ * Movement and actions of the Chaser enemy
+ */
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class ChaserMovement : MonoBehaviour
 {
     public static event System.Action OnChaserHasSpottedPlayer;
-
-    public Transform ThirdPersonMovement;
-    public float speed = 5;
-
-    bool disabled = false;
-
-    public NavMeshAgent navMeshAgent;
-    public NavMeshPath path;
-    public float timeForNewPath;
-    bool inCoRoutine;
-    Vector3 target;
-    bool validPath;
-
     
-
-    // Start is called before the first frame update
-    void Start()
+    [HideInInspector] public NavMeshAgent navMeshAgent;
+    [SerializeField] private Transform thirdPersonMovement;
+    [SerializeField] private float speed = 5;
+    [SerializeField] private float timeForNewPath;
+    
+    private NavMeshPath _path;
+    private Vector3 _target;
+    private bool _inCoroutine;
+    private bool _validPath;
+    private bool _disabled;
+    
+    private void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
-   
         FindObjectOfType<ThirdPersonMovement>().OnReachedEndOfLevel += Disable;
     }
-
-    // Update is called once per frame
+    
     public void Update()
     {
-
-        
-
-        Vector3 displacementFromTarget = ThirdPersonMovement.position - transform.position;
+        Vector3 displacementFromTarget = thirdPersonMovement.position - transform.position;
         Vector3 directionToTarget = displacementFromTarget.normalized;
         Vector3 velocity = directionToTarget * speed;
 
         float distanceToTarget = displacementFromTarget.magnitude;
-
-
-        if (distanceToTarget >= 2.0f && disabled == false)
+        
+        // Set Navmesh if certain distance away (kept comments just in case)
+        if (distanceToTarget >= 2.0f && _disabled == false)
         {
             //   if (!inCoRoutine)
             //DoSomething();
-            navMeshAgent.SetDestination(ThirdPersonMovement.position);
+            navMeshAgent.SetDestination(thirdPersonMovement.position);
             //GetNewPath();
         }
 
@@ -73,57 +66,48 @@ public class ChaserMovement : MonoBehaviour
 
                 //}
             }
-                
-    
         }
-        
     }
 
-    void Disable()
+    // Disable the enemy
+    private void Disable()
     {
-        disabled = true;
+        _disabled = true;
     }
 
-    Vector3 getNewRandomPosition()
+    // Create a new random position
+    private static Vector3 GetNewRandomPosition()
     {
-
         float x = Random.Range(-20, 20);
         float z = Random.Range(-20, 20);
 
         Vector3 pos = new Vector3(x, 0, z);
         return pos;
-
     }
 
-    void GetNewPath()
+    // Get a new path
+    private void GetNewPath()
     {
-        path = new NavMeshPath();
-        target = getNewRandomPosition();
-        navMeshAgent.SetDestination(target);
-
+        _path = new NavMeshPath();
+        _target = GetNewRandomPosition();
+        navMeshAgent.SetDestination(_target);
     }
 
-
-    IEnumerator DoSomething()
+    // Generate a new path?
+    private IEnumerator GeneratePath()
     {
-        
-        inCoRoutine = true;
+        _inCoroutine = true;
         yield return new WaitForSeconds(timeForNewPath);
         GetNewPath();
-        validPath = navMeshAgent.CalculatePath(target, path);
-        if (!validPath) Debug.Log("Found an inavlid path");
+        _validPath = navMeshAgent.CalculatePath(_target, _path);
+        if (!_validPath) Debug.Log("Found an invalid path");
 
-
-        while (!validPath)
+        while (!_validPath)
         {
-
             yield return new WaitForSeconds(0.01f);
             GetNewPath();
-            validPath = navMeshAgent.CalculatePath(target, path);
+            _validPath = navMeshAgent.CalculatePath(_target, _path);
         }
-        inCoRoutine = false;
-
+        _inCoroutine = false;
     }
-
-    
 }

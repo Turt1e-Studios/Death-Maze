@@ -1,12 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
+/*
+ * Guard enemy that follows a path. Probably unused.
+ */
 using UnityEngine;
 
 public class Guard : MonoBehaviour
 {
-    public Transform pathHolder;
+    [SerializeField] private Transform pathHolder;
 
-    void OnDrawGizmos()
+    // Show path in the editor
+    private void OnDrawGizmos()
     {
         foreach (Transform waypoint in pathHolder)
         {
